@@ -2,7 +2,6 @@
 include 'db.php';
 session_start();
 
-// Fetch new users and pending requests
 $new_users = $conn->query("SELECT * FROM users WHERE is_verified = 0 AND status != 'Rejected'");
 $pending_requests = $conn->query("SELECT * FROM requests WHERE status = 'Pending'");
 
@@ -19,9 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['status'])) {
         $request_id = $_POST['request_id'];
-        $status = $_POST['status']; // 'Approved' or 'Rejected'
+        $status = $_POST['status']; 
         
-        // Update the request status in the database
         $stmt = $conn->prepare("UPDATE requests SET status = ? WHERE id = ?");
         $stmt->bind_param("si", $status, $request_id);
         $stmt->execute();
@@ -29,9 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['approve_request'])) {
         $request_id = $_POST['request_id'];
-        $status = $_POST['approve_request']; // 'Approved'
+        $status = $_POST['approve_request'];
         
-        // Update the request status to 'Approved'
         $stmt = $conn->prepare("UPDATE requests SET status = ? WHERE id = ?");
         $stmt->bind_param("si", $status, $request_id);
         $stmt->execute();
@@ -39,15 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['reject_request'])) {
         $request_id = $_POST['request_id'];
-        $status = $_POST['reject_request']; // 'Rejected'
+        $status = $_POST['reject_request'];
         
-        // Update the request status to 'Rejected'
         $stmt = $conn->prepare("UPDATE requests SET status = ? WHERE id = ?");
         $stmt->bind_param("si", $status, $request_id);
         $stmt->execute();
     }
 
-    // Auto-refresh page after form submission
     header("Location: admin_dashboard.php");
     exit();
 }
@@ -58,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>ADMIN DASH</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -137,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="dashboard">
-        <h1>Admin Dashboard</h1>
+        <h1>ADMIN DASHBOARD</h1>
 
         <h3>New Users (<?= $new_users->num_rows ?>)</h3>
         <ul>
@@ -146,18 +141,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?= $user['username'] ?> (<?= $user['email'] ?>)
                     <form method="POST">
                         <input type="hidden" name="user_id" value="<?= $user['id'] ?>">
-                        <button type="submit" name="approve_user">Approve</button>
-                        <button type="submit" name="reject_user">Reject</button>
+                        <button type="submit" name="approve_user">APPROVE</button>
+                        <button type="submit" name="reject_user">REJECT</button>
                     </form>
                 </li>
             <?php endwhile; ?>
         </ul>
 
-        <h3>Pending Requests</h3>
+        <h3>PENDING REQUESTS</h3>
         <ul>
             <?php while ($req = $pending_requests->fetch_assoc()): ?>
                 <li>
-                    <?= $req['request_type'] ?> - Student ID: <?= $req['student_id'] ?>, Course: <?= $req['course'] ?>
+                    <?= $req['request_type'] ?> - STUDENT ID: <?= $req['student_id'] ?>, COURSE: <?= $req['course'] ?>
                     <form method="POST">
                         <input type="hidden" name="request_id" value="<?= $req['id'] ?>">
                         <button type="submit" name="status" value="Approved">Approve</button>
@@ -167,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endwhile; ?>
         </ul>
 
-        <a href="logout.php">Logout</a>
+        <a href="logout.php">LOGOUT</a>
     </div>
 </body>
 </html>

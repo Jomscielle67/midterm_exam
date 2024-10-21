@@ -1,5 +1,5 @@
 <?php
-include 'db.php'; // Ensure the DB connection works
+include 'db.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -7,10 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
-    // Hash the password for security
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Check if the user already exists (optional, but good practice)
     $check_user = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $check_user->bind_param("s", $email);
     $check_user->execute();
@@ -19,16 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($check_user->num_rows > 0) {
         echo "User with this email already exists.";
     } else {
-        // Insert new user with default 'Pending' status and 'is_verified = 0'
         $stmt = $conn->prepare("INSERT INTO users (username, email, password, is_verified, status) VALUES (?, ?, ?, 0, 'Pending')");
         $stmt->bind_param("sss", $username, $email, $hashed_password);
 
         if ($stmt->execute()) {
             echo "Registration successful! Please wait for admin approval.";
-            header("Location: login.php"); // Redirect to login or success page
+            header("Location: login.php");
             exit();
         } else {
-            echo "Error: " . $stmt->error; // Check for SQL errors
+            echo "Error: " . $stmt->error;
         }
     }
 
@@ -41,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Register</title>
+    <title>REGISTER</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -89,14 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="container">
-        <h1>Register</h1>
+        <h1>REGISTER</h1>
         <form method="POST" action="register.php">
             <input type="text" name="username" placeholder="Username" required><br>
             <input type="email" name="email" placeholder="Email" required><br>
             <input type="password" name="password" placeholder="Password" required><br>
-            <button type="submit">Register</button>
+            <button type="submit">REGISTER</button>
         </form>
-        <p>Already have an account? <a href="login.php">Login here</a></p>
+        <p>MAY ACCOUNT ? <a href="login.php">LOGIN KA DITO</a></p>
     </div>
 </body>
 </html>

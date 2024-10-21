@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Registration Rejected</title>
+    <title>REG REJ</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,8 +41,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Sorry, your registration has been rejected.</h1>
-        <p>If you believe this is a mistake, please contact support for further assistance.</p>
+        <h1>SORIE, NA REJECT YUNG REGISTRATION MO</h1>
+        <p>KUNG SA TINGIN MO AY ISA LAMANG TONG PAGKAKAMALI, CONTACT THE ADMIN.</p>
         <a href="login.php">Logout</a>
     </div>
 </body>

@@ -1,28 +1,24 @@
 <?php
 session_start();
-include 'db.php'; // Include database connection
+include 'db.php'; 
 
-// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Fetch user data securely
 $user_id = $_SESSION['user_id'];
 $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 
-// If user is rejected, log out and redirect
 if ($user['status'] === 'Rejected') {
     session_destroy();
     header("Location: registration_rejected.php");
     exit();
 }
 
-// Handle form submission for new requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$user['is_verified']) {
         $message = "Error: Your account is not verified. You cannot submit requests.";
@@ -45,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch user requests securely
 $stmt = $conn->prepare(
     "SELECT request_type, status, created_at FROM requests WHERE user_id = ?"
 );
@@ -148,45 +143,45 @@ $user_requests = $stmt->get_result();
 </head>
 <body>
     <div class="dashboard">
-        <h1>Welcome, <?= htmlspecialchars($user['username']) ?>!</h1>
+        <h1>WELCOME, <?= htmlspecialchars($user['username']) ?>!</h1>
 
         <?php if (!$user['is_verified']): ?>
-            <h2 style="color: red;">Your account is waiting for verification by the admin.</h2>
+            <h2 style="color: red;">WAIT KA LANG , VINE VERIFY PA YUNG ACCOUNT MO NG ADMIN.</h2>
         <?php else: ?>
             <div>
-                <h3>User Information</h3>
-                <p>Username: <?= htmlspecialchars($user['username']) ?></p>
-                <p>Email: <?= htmlspecialchars($user['email']) ?></p>
-                <p>Status: <?= $user['is_verified'] ? 'Verified' : 'Not Verified' ?></p>
+                <h3>USER INFORMATION</h3>
+                <p>USERNAME: <?= htmlspecialchars($user['username']) ?></p>
+                <p>EMAIL: <?= htmlspecialchars($user['email']) ?></p>
+                <p>STATUS: <?= $user['is_verified'] ? 'Verified' : 'Not Verified' ?></p>
             </div>
         <?php endif; ?>
 
         <div>
-            <h3>Submit a New Request</h3>
+            <h3>SUBMIT NEW REQUEST</h3>
             <?php if (!$user['is_verified']): ?>
-                <p style="color: red;">You cannot submit requests until your account is verified.</p>
+                <p style="color: red;">DI KA PA PWEDENG MAG SUBMIT HANGGAT DIKA VERIFIED</p>
             <?php else: ?>
                 <form method="POST">
                     <select name="request_type" required>
                         <option value="TOR">TOR</option>
                         <option value="COR">COR</option>
-                        <option value="GRAD_CERT">Certificate of Graduation</option>
+                        <option value="GRAD_CERT">CERTIFICATE OF GRADUATION</option>
                     </select>
                     <input type="text" name="student_id" placeholder="Student ID" required>
                     <input type="text" name="course" placeholder="Course" required>
-                    <button type="submit">Submit Request</button>
+                    <button type="submit">SUBMIT REQUEST</button>
                 </form>
             <?php endif; ?>
         </div>
 
         <div>
-            <h3>Your Requests</h3>
+            <h3>YOUR REQUESTS</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Request Type</th>
-                        <th>Status</th>
-                        <th>Date Submitted</th>
+                        <th>REQUEST TYPE</th>
+                        <th>STATUS</th>
+                        <th>DATE SUBMITTED</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -203,7 +198,7 @@ $user_requests = $stmt->get_result();
             </table>
         </div>
 
-        <a href="logout.php">Logout</a>
+        <a href="logout.php">LOGOUT</a>
     </div>
 </body>
 </html>
